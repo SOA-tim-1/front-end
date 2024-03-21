@@ -129,9 +129,9 @@ export class EncountersExecutionComponent implements AfterViewInit, OnDestroy {
         this.mapComponent.closePopupAt(this.encounter.coordinates.latitude, this.encounter.coordinates.longitude);
       },
       error: (error) => {
-        if (error.error.status === 400) {
-          console.log(error.error.detail.split('\r\n')[1].split('=')[1]);
-          this.encounterDrawService.showUnableToActivate(error.error.detail.split('\r\n')[1].split('=')[1]);
+        if (error.status === 400) {
+          console.log(error.error);
+          this.encounterDrawService.showUnableToActivate(error.error);
         }
       }
     });
