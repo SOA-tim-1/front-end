@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PagedResults } from "src/app/shared/model/paged-results.model";
 import { Encounter, EncounterStatistics } from "./model/encounters.model";
-import { environment } from "src/env/environment";
+import { environment, goEnvironment } from "src/env/environment";
 import { Observable } from "rxjs";
 import { TextWrapper } from 'src/app/shared/model/text-wrapper.model';
 
@@ -15,7 +15,7 @@ export class EncounterService {
 
     getAllEncounters(): Observable<PagedResults<Encounter>> {
         return this.http.get<PagedResults<Encounter>>(
-            environment.apiHost + 'administration/encounter')
+            goEnvironment.apiHost + 'encounter/')
     }
 
     getForCheckpoint(id: number): Observable<Encounter> {
@@ -36,21 +36,21 @@ export class EncounterService {
 
     getActiveEncounters(): Observable<PagedResults<Encounter>> {
         return this.http.get<PagedResults<Encounter>>(
-            environment.apiHost + 'tourist/execution/encounter/allEncounters')
+            goEnvironment.apiHost + 'encounter/active/')
     }
 
     deleteEncounter(id: number): Observable<Encounter> {
         return this.http.delete<Encounter>(
-            environment.apiHost + 'administration/encounter/' + id);
+            goEnvironment.apiHost + 'encounter/' + id);
     }
 
     addEncounter(encounter: Encounter): Observable<Encounter> {
         return this.http.post<Encounter>(
-            environment.apiHost + 'administration/encounter', encounter);
+            goEnvironment.apiHost + 'encounter/', encounter);
     }
 
     updateEncounter(encounter: Encounter): Observable<Encounter> {
         return this.http.put<Encounter>(
-            environment.apiHost + 'administration/encounter', encounter);
+            goEnvironment.apiHost + 'encounter/', encounter);
     }
 }
