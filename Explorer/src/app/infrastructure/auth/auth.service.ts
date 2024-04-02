@@ -77,22 +77,22 @@ export class AuthService {
   }
 
   getNameById(id: number): Observable<People> {
-    return this.http.get<People>('https://localhost:44333/api/person/'+id); 
+    return this.http.get<People>('http://localhost:44333/api/person/'+id); 
   }
 
   updateUserLocation(person: People): Observable<People> {
-    return this.http.put<People>('https://localhost:44333/api/person/updateLocation/', person);
+    return this.http.put<People>('http://localhost:44333/api/person/updateLocation/', person);
   }
 
   getAllUsers(loggedId: number): Observable<PagedResults<User>> {
     return this.http.get<PagedResults<User>>(
-      'https://localhost:44333/api/users/allUsers/GetAll/' + loggedId
+      'http://localhost:44333/api/users/allUsers/GetAll/' + loggedId
     );
   }
 
   getUserById(id: number): Observable<User> {
     return this.http.get<User>(
-      'https://localhost:44333/api/users/allUsers/GetById/' + id
+      'http://localhost:44333/api/users/allUsers/GetById/' + id
     );
   }
 }

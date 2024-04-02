@@ -195,7 +195,7 @@ export class MarketplaceService {
   }
   getWallet(userId: number): Observable<TouristWallet> {
     return this.http
-      .get<TouristWallet>('https://localhost:44333/api/wallet/' + userId)
+      .get<TouristWallet>('http://localhost:44333/api/wallet/' + userId)
       .pipe(
         tap((result) => {
           this.wallet$.next(result);
@@ -206,7 +206,7 @@ export class MarketplaceService {
   addCoinsToUser(userId: number, coins: number): Observable<TouristWallet> {
     return this.http
       .put<TouristWallet>(
-        'https://localhost:44333/api/wallet/addCoins/' + userId,
+        'http://localhost:44333/api/wallet/addCoins/' + userId,
         coins
       )
       .pipe(

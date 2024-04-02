@@ -14,21 +14,21 @@ export class CouponService {
 
   addCoupon(coupon: Coupon): Observable<Coupon> {
     return this.http.post<Coupon>(
-      'https://localhost:44333/api/author/coupons/createCoupon',
+      'http://localhost:44333/api/author/coupons/createCoupon',
       coupon
     );
   }
 
   deleteCoupon(hash: string): Observable<Coupon> {
     return this.http.delete<Coupon>(
-      'https://localhost:44333/api/author/coupons/deleteCoupon?CouponHash=' +
+      'http://localhost:44333/api/author/coupons/deleteCoupon?CouponHash=' +
         hash
     );
   }
 
   updateCoupon(coupon: Coupon, hash: string): Observable<Coupon> {
     return this.http.put<Coupon>(
-      'https://localhost:44333/api/author/coupons/updateCoupon?couponHash=' +
+      'http://localhost:44333/api/author/coupons/updateCoupon?couponHash=' +
         hash,
       coupon
     );
@@ -36,13 +36,13 @@ export class CouponService {
 
   getAuthorTours(authorId: number): Observable<PagedResults<Tour>> {
     return this.http.get<PagedResults<Tour>>(
-      'https://localhost:44333/api/tour/authortours?authorId=' + authorId
+      'http://localhost:44333/api/tour/authortours?authorId=' + authorId
     );
   }
 
   createGiftCoupon(coupon: Coupon): Observable<Coupon> {
     return this.http.post<Coupon>(
-      'https://localhost:44333/api/author/coupons/createGiftCoupon',
+      'http://localhost:44333/api/author/coupons/createGiftCoupon',
       coupon
     );
   }
