@@ -6,6 +6,7 @@ import {
   Questionnaire,
   UserProfile,
 } from './model/userProfile.model';
+import { environment } from 'src/env/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,7 @@ export class LayoutService {
 
   getProfile(id: number): Observable<UserProfile> {
     return this.http.get<UserProfile>(
-      `https://localhost:44333/api/person/${id}`
+      `${environment.apiHost}person/${id}`
     );
   }
 

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { NotificationModel } from './notification.model';
+import { environment } from 'src/env/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,7 @@ export class NotificationService {
 
   getNotifications(): Observable<PagedResults<NotificationModel>> {
     return this.http.get<PagedResults<NotificationModel>>(
-      'https://localhost:44333/api/notifications/users'
+      environment.apiHost + 'notifications/users'
     );
   }
 
@@ -21,7 +22,7 @@ export class NotificationService {
     notification: NotificationModel
   ): Observable<NotificationModel> {
     return this.http.put<NotificationModel>(
-      'https://localhost:44333/api/notifications/users/' + notification.id,
+      environment.apiHost + 'notifications/users/' + notification.id,
       notification
     );
   }
@@ -30,7 +31,7 @@ export class NotificationService {
     notification: NotificationModel
   ): Observable<NotificationModel> {
     return this.http.post<NotificationModel>(
-      'https://localhost:44333/api/notifications/users',
+      environment.apiHost + 'notifications/users',
       notification
     );
   }
