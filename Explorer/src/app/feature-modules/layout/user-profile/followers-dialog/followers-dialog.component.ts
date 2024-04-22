@@ -22,11 +22,15 @@ export class FollowersDialogComponent implements OnInit,OnDestroy{
  
   user: User | undefined;
   userId: number;
-  followers: Followers[] = [];
-  following: Followers[] = [];
+  //followers: Followers[] = [];
+  followersIds: number[] = [];
+  followingIds: number[] = [];
+  //following: Followers[] = [];
   followersUsernames: { [key: number]: string } = {};
+  followersStatus: { [key: number]: boolean } = {};
   followingUsernames: { [key: number]: string } = {};
-  allFollowers: Followers[] = [];
+  
+  // allFollowers: Followers[] = [];
 
   showFollowers: boolean = true; 
   showFollowing: boolean = false;
@@ -49,7 +53,7 @@ export class FollowersDialogComponent implements OnInit,OnDestroy{
 
   ngOnInit(): void {
     this.userId = this.authService.user$.getValue().id;
-    this.getAllFollowers();
+    //this.getAllFollowers();
     this.getFollowers();
     this.getFollowing();
 
@@ -63,42 +67,86 @@ export class FollowersDialogComponent implements OnInit,OnDestroy{
 
   
   getFollowers():void{
-    this.followersService.getFollowers().subscribe({
-      next: (result: PagedResults<Followers>) => {
-        this.followers = result.results.filter(fol => fol.followedId === this.userId);
-        this.getUsernamesForFollowers();
+    this.followersService.getFollowers(this.authService.user$.getValue().id).subscribe({
+      next: (result: number[]) => {
+        //this.followers = result.results.filter(fol => fol.followedId === this.userId);
+        this.followersIds = result;
+        this.getUsernamesForFollowers(result);
+        this.getStatusForFollowers(result);
       }
     }) 
   }
 
-  getUsernamesForFollowers(): void {
-    this.followers.forEach((follower) => {
-      this.authService.getUserById(follower.followingId).subscribe({
+  getUsernamesForFollowers(followersIds : number[]): void {
+    followersIds.forEach((id) => {
+      this.authService.getUserById(id).subscribe({
         next: (result: User) => {
-          this.followersUsernames[follower.followingId] = result.username;
+          this.followersUsernames[id] = result.username;
         }
       });
     });
   }
 
   getFollowing():void{
-    this.followersService.getFollowers().subscribe({
-      next: (result: PagedResults<Followers>) => {
-        this.following = result.results.filter(fol => fol.followingId === this.userId);
-        this.getUsernamesForFollowing();
+    this.followersService.getFollows(this.authService.user$.getValue().id).subscribe({
+      next: (result: number[]) => {
+        //this.following = result.results.filter(fol => fol.followingId === this.userId);
+        this.followingIds = result;
+        this.getUsernamesForFollowing(result);
       }
     }) 
   }
 
-  getUsernamesForFollowing(): void {
-    this.following.forEach((follower) => {
-      this.authService.getUserById(follower.followedId).subscribe({
+  getUsernamesForFollowing(followingIds : number[]): void {
+    followingIds.forEach((id) => {
+      this.authService.getUserById(id).subscribe({
         next: (result: User) => {
-          this.followingUsernames[follower.followedId] = result.username;
+          this.followingUsernames[id] = result.username;
         }
       });
     });
   }
+
+  // followUser(folId: number) {
+
+  //   const newFollower: Followers = {
+  //     followedId: folId,
+  //     followingId: this.userId
+  //   };
+
+  //   const newNotification : NotificationModel={
+  //     senderId: this.userId,
+  //     receiverId: folId,
+  //     message: this.user?.username + ' followed you!',
+  //     isRead: false
+  //   }
+  
+  //   this.followersService.getFollowerById(folId,this.userId).subscribe({
+  //     next: (res: Followers)=>{
+  //       if(res.id === 0)
+  //       {
+  //         this.followersService.createFollower(newFollower).subscribe({
+  //           next: () => {
+  //             this.getFollowers();
+  //             this.getFollowing();
+  //             this.toastr.success('Followed successfully')
+  //             this.getFollowers();
+  //             this.notificationService.createNotification(newNotification).subscribe({
+  //               next:()=>{}
+  //             })
+  //           },
+  //           error: (err) => {
+  //             console.error('Error following user: ', err);
+  //           }
+  //         });
+  //       }
+  //       else{
+  //         console.log(res);
+  //         this.toastr.error('YOU ALREADY FOLLOW IT')
+  //       }  
+  //     }
+  //   })
+  // }
 
   followUser(folId: number) {
 
@@ -114,47 +162,89 @@ export class FollowersDialogComponent implements OnInit,OnDestroy{
       isRead: false
     }
   
-    this.followersService.getFollowerById(folId,this.userId).subscribe({
-      next: (res: Followers)=>{
-        if(res.id === 0)
-        {
-          this.followersService.createFollower(newFollower).subscribe({
-            next: () => {
-              this.getFollowers();
-              this.getFollowing();
-              this.toastr.success('Followed successfully')
-              this.getFollowers();
-              this.notificationService.createNotification(newNotification).subscribe({
-                next:()=>{}
-              })
-            },
-            error: (err) => {
-              console.error('Error following user: ', err);
-            }
-          });
-        }
-        else{
-          console.log(res);
-          this.toastr.error('YOU ALREADY FOLLOW IT')
-        }  
-      }
-    })
-  }
 
-  getAllFollowers(): void {
-    this.followersService.getFollowers().subscribe({
-      next: (result: PagedResults<Followers>) => {
-        this.allFollowers = result.results;
+    this.followersService.createFollower(newFollower).subscribe({
+      next: () => {
+        this.getFollowers();
+        this.getFollowing();
+        this.toastr.success('Followed successfully')
+        this.getFollowers();
+        this.notificationService.createNotification(newNotification).subscribe({
+          next:()=>{}
+        })
+      },
+      error: (err) => {
+        console.error('Error following user: ', err);
       }
     });
+        
   }
+
+  // followUser(folId: number) {
+
+  //   const newFollower: Followers = {
+  //     followedId: folId,
+  //     followingId: this.userId
+  //   };
+
+  //   const newNotification : NotificationModel={
+  //     senderId: this.userId,
+  //     receiverId: folId,
+  //     message: this.user?.username + ' followed you!',
+  //     isRead: false
+  //   }
   
-isFollowing(followingId: number){
-return false;
+  //   this.followersService.getFollowerById(folId,this.userId).subscribe({
+  //     next: (res: Followers)=>{
+  //       if(res.id === 0)
+  //       {
+  //         this.followersService.createFollower(newFollower).subscribe({
+  //           next: () => {
+  //             this.getFollowers();
+  //             this.getFollowing();
+  //             this.toastr.success('Followed successfully')
+  //             this.getFollowers();
+  //             this.notificationService.createNotification(newNotification).subscribe({
+  //               next:()=>{}
+  //             })
+  //           },
+  //           error: (err) => {
+  //             console.error('Error following user: ', err);
+  //           }
+  //         });
+  //       }
+  //       else{
+  //         console.log(res);
+  //         this.toastr.error('YOU ALREADY FOLLOW IT')
+  //       }  
+  //     }
+  //   })
+  // }
+
+  // getAllFollowers(): void {
+  //   this.followersService.getFollowers().subscribe({
+  //     next: (result: PagedResults<Followers>) => {
+  //       this.allFollowers = result.results;
+  //     }
+  //   });
+  // }
+  
+isFollowing(followerId: number) : boolean{
+  return this.followersStatus[followerId];
+}
+
+getStatusForFollowers(followersIds : number[]): void {
+  followersIds.forEach((id) => {
+    this.followersService.checkIfIsFollowingUser(this.authService.user$.getValue().id, id).subscribe({
+      next : (result : boolean)=>{
+        this.followersStatus[id] = result;
+      }
+    })
+  });
 }
 
   
-  unfollowUser(folId: number): void {
+unfollowUser(folId: number): void {
     this.followersService.deleteFollower(folId,this.userId).subscribe({
       next:()=>{
         this.getFollowers();
@@ -163,7 +253,7 @@ return false;
     })
   }
 
-  unfollowConfirmation(folId: number): void {
+unfollowConfirmation(folId: number): void {
     Swal.fire({
       title: 'Are you sure?',
       text: 'You are about to unfollow this user.',
