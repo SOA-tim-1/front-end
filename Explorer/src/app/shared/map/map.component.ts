@@ -19,7 +19,7 @@ export class MapComponent implements AfterViewInit {
   @Output() changeDistance = new EventEmitter();
   @Output() changeTravelMethodAndTime = new EventEmitter();
   @Output() changeValue = new EventEmitter();
-  @Output() activatedEncounterId = new EventEmitter<number>();
+  @Output() activatedEncounterId = new EventEmitter<string>();
 
   private map: any;
   private currentMarker: any = null;
@@ -295,7 +295,7 @@ export class MapComponent implements AfterViewInit {
     this.routeControl = null;
   }
 
-  drawEncounters(encounters: Encounter[], popups: Map<number, string>): any[] {
+  drawEncounters(encounters: Encounter[], popups: Map<string, string>): any[] {
     this.markers.forEach(marker => {
       this.map.removeLayer(marker);
     });
@@ -362,7 +362,7 @@ export class MapComponent implements AfterViewInit {
     }
   }
 
-  activateEncounter(encounterId: number): void {
+  activateEncounter(encounterId: string): void {
     this.activatedEncounterId.emit(encounterId);
   }
 }

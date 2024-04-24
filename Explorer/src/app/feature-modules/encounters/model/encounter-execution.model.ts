@@ -7,8 +7,8 @@ export enum EncounterExecutionStatus {
 }
 
 export interface EncounterExecution {
-    id: number;
-    encounterId: number;
+    id: string;
+    encounterId: string;
     touristId: number;
     status: EncounterExecutionStatus;
     lastActivity: Date;

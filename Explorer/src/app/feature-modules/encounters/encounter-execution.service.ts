@@ -14,22 +14,22 @@ export class EncounterExecutionService {
 
   constructor(private http: HttpClient) { }
 
-  activate(encounterId: number, coordinate: Coordinate): Observable<EncounterExecution> {
+  activate(encounterId: string, coordinate: Coordinate): Observable<EncounterExecution> {
     return this.http.post<EncounterExecution>(
       goEnvironment.apiHost + 'execution/' + encounterId, coordinate);
   }
 
-  abandon(executionId: number): Observable<EncounterExecution> {
+  abandon(executionId: string): Observable<EncounterExecution> {
     return this.http.patch<EncounterExecution>(
       goEnvironment.apiHost + 'execution/abandon/' + executionId, {});
   }
 
-  checkIfCompleted(executionId: number, coordinate: Coordinate): Observable<EncounterExecution> {
+  checkIfCompleted(executionId: string, coordinate: Coordinate): Observable<EncounterExecution> {
     return this.http.patch<EncounterExecution>(
       goEnvironment.apiHost + 'execution/' + executionId, coordinate);
   }
 
-  completeMiscEncounter(executionId: number): Observable<EncounterExecution> {
+  completeMiscEncounter(executionId: string): Observable<EncounterExecution> {
     return this.http.patch<EncounterExecution>(
       goEnvironment.apiHost + 'execution/completeMisc/' + executionId, {});
   }

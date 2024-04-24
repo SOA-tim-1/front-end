@@ -52,7 +52,7 @@ export class EncounterComponent implements OnInit {
       return "No Image";
   }
 
-  deleteEncounter(id: number): void {
+  deleteEncounter(id: string): void {
     this.service.deleteEncounter(id).subscribe({
       next: () => {
         this.getAllEncounters();

@@ -1,5 +1,5 @@
 declare global {
-  interface Window { activateEncounter: (id: number) => void; }
+  interface Window { activateEncounter: (id: string) => void; }
 }
 
 
@@ -116,7 +116,7 @@ export class PositionSimulatorComponent implements OnInit {
 
 
   ngAfterViewInit(): void {
-    window['activateEncounter'] = (id: number) => this.mapComponent.activateEncounter(id);
+    window['activateEncounter'] = (id: string) => this.mapComponent.activateEncounter(id);
   }
 
 
@@ -228,7 +228,7 @@ export class PositionSimulatorComponent implements OnInit {
   }
 
 
-  activateEncounter(encounterId: number): void {
+  activateEncounter(encounterId: string): void {
     if (this.encounterActive) {
       this.toastr.error('You must finish your active encounter before starting another one.', 'Encounter already active');
       return;
@@ -422,7 +422,7 @@ export class PositionSimulatorComponent implements OnInit {
       let popUps = this.encounters.reduce((map, encounter, index) => {
         map.set(encounter.id!, this.encounterDrawService.generateEncounterPopUp(encounter, results[index]));
         return map;
-      }, new Map<number, string>());
+      }, new Map<string, string>());
 
 
       this.mapComponent.drawEncounters(this.encounters, popUps);

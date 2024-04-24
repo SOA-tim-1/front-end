@@ -55,7 +55,7 @@ export class EncounterDrawService {
     return `<div style="text-align: center; font-size: 1.15em;"><strong>Task:</strong> ${encounter.miscEncounterTask}</div><br>`;
   }
   
-  generateEncounterButton(encounterId: number): string {
+  generateEncounterButton(encounterId: string): string {
     return `<div style="display: flex; justify-content: center;">
               <button onclick="activateEncounter(${encounterId})" style="background-color: #315149; border: none; border-radius: 20px; padding: 10px 20px; font-size: 1.2em; color: white; transition: all 0.3s ease 0s; cursor: pointer; outline: none;">
                 Activate Encounter

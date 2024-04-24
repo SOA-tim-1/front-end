@@ -28,7 +28,7 @@ export class EncounterService {
             environment.apiHost + `administration/encounter/checkpoint/`)
     }
 
-    getStatisticsForEncounter(encounterId: number): Observable<EncounterStatistics> {
+    getStatisticsForEncounter(encounterId: string): Observable<EncounterStatistics> {
         return this.http.get<EncounterStatistics>(
             environment.apiHost + `administration/encounter/statistics/${encounterId}`)
     }
@@ -39,7 +39,7 @@ export class EncounterService {
             environment.apiHost + 'tourist/execution/encounter/allEncounters')
     }
 
-    deleteEncounter(id: number): Observable<Encounter> {
+    deleteEncounter(id: string): Observable<Encounter> {
         return this.http.delete<Encounter>(
             environment.apiHost + 'administration/encounter/' + id);
     }

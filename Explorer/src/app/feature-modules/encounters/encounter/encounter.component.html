@@ -28,7 +28,7 @@
                                     <td>{{e.range}}</td>
                                     <td>{{e.socialEncounterRequiredPeople}}</td>
                                     <td>
-                                        <button color="accent" (click)="deleteEncounter(e.id || 0)" mat-icon-button>
+                                        <button color="accent" (click)="deleteEncounter(e.id || '')" mat-icon-button>
                                             <mat-icon>delete</mat-icon>
                                         </button>
                                         <button color="primary" (click)="onEditClicked(e)" mat-icon-button>
@@ -73,7 +73,7 @@
                                     </td>
                                     <td>{{e.socialEncounterRequiredPeople}}</td>
                                     <td>
-                                        <button color="accent" (click)="deleteEncounter(e.id || 0)" mat-icon-button>
+                                        <button color="accent" (click)="deleteEncounter(e.id || '')" mat-icon-button>
                                             <mat-icon>delete</mat-icon>
                                         </button>
                                         <button color="primary" (click)="onEditClicked(e)" mat-icon-button>
@@ -115,7 +115,7 @@
                                     <td>{{e.range}}</td>
                                     <td>{{e.miscEncounterTask}}</td>
                                     <td>
-                                        <button color="accent" (click)="deleteEncounter(e.id || 0)" mat-icon-button>
+                                        <button color="accent" (click)="deleteEncounter(e.id || '')" mat-icon-button>
                                             <mat-icon>delete</mat-icon>
                                         </button>
                                         <button color="primary" (click)="onEditClicked(e)" mat-icon-button>
