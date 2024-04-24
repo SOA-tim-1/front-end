@@ -58,7 +58,8 @@ export class UserProfileComponent implements OnInit,OnDestroy {
       this.checkNewNotifications();
       this.getFollowers();
       this.getFollowing();
-      this.getNotFollowing();
+      //this.getNotFollowing();
+      this.getSuggestedUsers();
       this.getTourExecutionStats();
       this.calculateLevel();
   
@@ -120,19 +121,19 @@ export class UserProfileComponent implements OnInit,OnDestroy {
     }
 
     getFollowers():void{
-      this.followersService.getFollowers().subscribe({
-        next: (result: PagedResults<Followers>) => {
-          this.followers = result.results.filter(fol => fol.followedId === this.user?.id);
-          this.numOfFollowers = this.followers.length;
+      this.followersService.getFollowers(this.authService.user$.getValue().id).subscribe({
+        next: (result: number[]) => {
+          //this.followers = result.results.filter(fol => fol.followedId === this.user?.id);
+          this.numOfFollowers = result.length
         }
       }) 
     }
   
     getFollowing():void{
-      this.followersService.getFollowers().subscribe({
-        next: (result: PagedResults<Followers>) => {
-          this.following = result.results.filter(fol => fol.followingId === this.user?.id);
-          this.numOfFollowing = this.following.length;
+      this.followersService.getFollows(this.authService.user$.getValue().id).subscribe({
+        next: (result: number[]) => {
+          //this.following = result.results.filter(fol => fol.followingId === this.user?.id);
+          this.numOfFollowing = result.length
         }
       }) 
     }
@@ -169,17 +170,38 @@ export class UserProfileComponent implements OnInit,OnDestroy {
         if (result && result.refreshFollowers) {
           this.getFollowers();
           this.getFollowing();
-          this.getNotFollowing();
+          //this.getNotFollowing();
+          this.getSuggestedUsers();
         }
       });
     }
     
-    getNotFollowing(): void{
-      this.notFollowingUsers$ = this.followersService.getNotFollowing(this.userId);
-      this.notFollowingUsers$.subscribe(
-        users => {
-          this.notFollowing = users;
-        })
+    // getNotFollowing(): void{
+    //   this.notFollowingUsers$ = this.followersService.getNotFollowing(this.userId);
+    //   this.notFollowingUsers$.subscribe(
+    //     users => {
+    //       this.notFollowing = users;
+    //     })
+    // }
+
+    
+
+    getSuggestedUsers(){
+      this.notFollowing = []
+
+      this.followersService.getSuggestedUsersIds(this.authService.user$.getValue().id).subscribe({
+        next : (result : number[]) =>{
+          result.forEach((id) =>{
+            this.authService.getUserById(id).subscribe({
+              next : (res : User) =>{
+                this.notFollowing.push(res)
+              }
+            })
+          })
+          
+        }
+      })
+
     }
 
     followUser(folId: number) {
@@ -188,7 +210,7 @@ export class UserProfileComponent implements OnInit,OnDestroy {
         followedId: folId,
         followingId: this.userId
       };
-
+  
       const newNotification : NotificationModel={
         senderId: this.userId,
         receiverId: folId,
@@ -196,32 +218,65 @@ export class UserProfileComponent implements OnInit,OnDestroy {
         isRead: false
       }
     
-      this.followersService.getFollowerById(folId,this.userId).subscribe({
-        next: (res: Followers)=>{
-          if(res.id === 0)
-          {
-            this.followersService.createFollower(newFollower).subscribe({
-              next: () => {
-                this.getFollowers();
-                this.getFollowing();
-                this.toastr.success('Followed successfully')
-                this.notFollowing = this.notFollowing.filter(user => user.id !== folId);
-                this.notificationService.createNotification(newNotification).subscribe({
-                  next:()=>{}
-                })
-              },
-              error: (err) => {
-                console.error('Error following user: ', err);
-              }
-            });
-          }
-          else{
-            console.log(res);
-            this.toastr.error('YOU ALREADY FOLLOW IT')
-          }  
+  
+      this.followersService.createFollower(newFollower).subscribe({
+        next: () => {
+          this.getFollowers();
+          this.getFollowing();
+          this.toastr.success('Followed successfully')
+          this.getFollowers();
+          this.getSuggestedUsers();
+          this.notificationService.createNotification(newNotification).subscribe({
+            next:()=>{}
+          })
+        },
+        error: (err) => {
+          console.error('Error following user: ', err);
         }
-      })
+      });
+          
     }
+
+    // followUser(folId: number) {
+
+    //   const newFollower: Followers = {
+    //     followedId: folId,
+    //     followingId: this.userId
+    //   };
+
+    //   const newNotification : NotificationModel={
+    //     senderId: this.userId,
+    //     receiverId: folId,
+    //     message: this.user?.username + ' followed you!',
+    //     isRead: false
+    //   }
+    
+    //   this.followersService.getFollowerById(folId,this.userId).subscribe({
+    //     next: (res: Followers)=>{
+    //       if(res.id === 0)
+    //       {
+    //         this.followersService.createFollower(newFollower).subscribe({
+    //           next: () => {
+    //             this.getFollowers();
+    //             this.getFollowing();
+    //             this.toastr.success('Followed successfully')
+    //             this.notFollowing = this.notFollowing.filter(user => user.id !== folId);
+    //             this.notificationService.createNotification(newNotification).subscribe({
+    //               next:()=>{}
+    //             })
+    //           },
+    //           error: (err) => {
+    //             console.error('Error following user: ', err);
+    //           }
+    //         });
+    //       }
+    //       else{
+    //         console.log(res);
+    //         this.toastr.error('YOU ALREADY FOLLOW IT')
+    //       }  
+    //     }
+    //   })
+    // }
 
     //getXp(){}
 

@@ -6,31 +6,31 @@
   </div>
   <div class="followers-list">
       <div class="followers" *ngIf="showFollowers">
-          <div class="follower" *ngFor="let fol of followers">
-              {{ followersUsernames[fol.followingId] }}
-              <ng-container *ngIf="isFollowing(fol.followingId)">
-                  <button class="btn-in" (click)="unfollowConfirmation(fol.followingId)">Unfollow</button>
+          <div class="follower" *ngFor="let id of followersIds">
+              {{ followersUsernames[id] }}
+              <ng-container *ngIf="isFollowing(id)">
+                  <button class="btn-in" (click)="unfollowConfirmation(id)">Unfollow</button>
               </ng-container>
-              <ng-container *ngIf="!isFollowing(fol.followingId)">
-                  <button class="btn-in" (click)="followUser(fol.followingId)">Follow</button>
+              <ng-container *ngIf="!isFollowing(id)">
+                  <button class="btn-in" (click)="followUser(id)">Follow</button>
               </ng-container>
-              <button class="btn-message" (click)="toggleInput(fol.followingId)">
+              <button class="btn-message" (click)="toggleInput(id)">
                 <mat-icon>message</mat-icon>
               </button>
               
-              <div *ngIf="showInput(fol.followingId)" class="input-container show-input">
+              <div *ngIf="showInput(id)" class="input-container show-input">
                 <textarea [(ngModel)]="userMessage" placeholder="Type your message" rows="7"></textarea>
-                <button class="btn-send" (click)="sendMessage(fol.followingId)">Send</button>
-                <button class="btn-close" (click)="closeInput(fol.followingId)">Close</button>
+                <button class="btn-send" (click)="sendMessage(id)">Send</button>
+                <button class="btn-close" (click)="closeInput(id)">Close</button>
               </div>
               
           </div>
       </div>
 
       <div class="following" *ngIf="showFollowing">
-          <div class="follower" *ngFor="let fol of following">
-              {{ followingUsernames[fol.followedId] }}
-              <button class="btn-in" (click)="unfollowConfirmation(fol.followedId)">Unfollow</button>
+          <div class="follower" *ngFor="let id of followingIds">
+              {{ followingUsernames[id] }}
+              <button class="btn-in" (click)="unfollowConfirmation(id)">Unfollow</button>
           </div>
       </div>
   </div>
