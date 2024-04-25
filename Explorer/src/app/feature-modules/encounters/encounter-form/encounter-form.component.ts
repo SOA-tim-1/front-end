@@ -125,6 +125,7 @@ export class EncounterFormComponent implements OnChanges, AfterViewInit {
 
   addEncounter(imageURL?: string) {
     let encounter: Encounter = {
+      id: '',
       coordinates: {
         longitude: this.encounterForm.value.longitude || 0,
         latitude: this.encounterForm.value.latitude || 0,
