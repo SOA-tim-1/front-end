@@ -7,6 +7,7 @@ import { Rating } from '../model/rating.model';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Comment } from '../model/comment.model';
+import { FollowersService } from '../../layout/user-profile/followers-dialog/followers.service';
 
 @Component({
   selector: 'xp-blog-page',
@@ -28,7 +29,7 @@ export class BlogPageComponent {
   constructor(
     private route: ActivatedRoute,
     private blogService: BlogService,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
@@ -72,7 +73,6 @@ export class BlogPageComponent {
     this.blogService.voteBlog(this.blogId, rating).subscribe({
       next: () => {
         this.blog = this.blogService.getBlogById(this.blogId);
-        console.log(this.blog);
         this.userUpvoted = true;
         this.userDownvoted = false;
       },

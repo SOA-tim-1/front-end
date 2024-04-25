@@ -16,6 +16,7 @@ import { CommentEditComponent } from './comments/comment-edit/comment-edit.compo
 import { BlogRatingComponent } from './blog-rating/blog-rating.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
+import { FollowBlogAuthorComponent } from './follow-blog-author/follow-blog-author.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { MatInputModule } from '@angular/material/input';
     BlogPageComponent,
     CommentEditComponent,
     BlogRatingComponent,
+    FollowBlogAuthorComponent,
   ],
   imports: [
     CommonModule,

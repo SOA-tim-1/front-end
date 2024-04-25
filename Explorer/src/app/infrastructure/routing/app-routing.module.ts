@@ -63,6 +63,7 @@ import { UserLocationComponent } from '../auth/user-location/user-location.compo
 import { CheckoutPageComponent } from 'src/app/feature-modules/marketplace/checkout-page/checkout-page.component';
 import { TourExecutionLeaderboardsComponent } from 'src/app/feature-modules/tour-execution/tour-execution-leaderboards/tour-execution-leaderboards.component';
 import { TourOverviewPageComponent } from 'src/app/feature-modules/marketplace/tour-overview-page/tour-overview-page.component';
+import { FollowBlogAuthorComponent } from 'src/app/feature-modules/blog/follow-blog-author/follow-blog-author.component';
 
 
 const routes: Routes = [
@@ -92,7 +93,8 @@ const routes: Routes = [
   { path: 'admin/encounters-overview', component: EncounterComponent, canActivate: [AdminGuard] },
   // Auth
   { path: 'join-club-request', component: RequestToJoinClubComponent, canActivate: [AuthGuard] }, //.
-  { path: 'blog', component: BlogListComponent, canActivate: [AuthGuard] }, //.
+  { path: 'blog', component: BlogListComponent}, //.
+  { path: 'follow-blog-author/:id', component: FollowBlogAuthorComponent}, //.
   { path: 'blog/:id', component: BlogPageComponent, canActivate: [AuthGuard] },
   { path: 'review-tour', component: ReviewTourComponent, canActivate: [AuthGuard] }, //.
   { path: 'application-rate/create', component: ApplicationRateFormComponent, canActivate: [AuthGuard] }, //.
