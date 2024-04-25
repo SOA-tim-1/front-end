@@ -238,6 +238,7 @@ getStatusForFollowers(followersIds : number[]): void {
     this.followersService.checkIfIsFollowingUser(this.authService.user$.getValue().id, id).subscribe({
       next : (result : boolean)=>{
         this.followersStatus[id] = result;
+        console.log(result)
       }
     })
   });

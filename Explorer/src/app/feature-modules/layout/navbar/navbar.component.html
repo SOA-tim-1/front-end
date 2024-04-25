@@ -49,6 +49,13 @@
             Encounters
           </button>
           <button
+            *ngIf="user && user.role === 'tourist'"
+            class="navbar-link"
+            [routerLink]="['blog']"
+          >
+            Blogs
+          </button>
+          <button
             *ngIf="user && user.role === 'administrator'"
             class="navbar-link"
             [routerLink]="['admin/equipment']"
