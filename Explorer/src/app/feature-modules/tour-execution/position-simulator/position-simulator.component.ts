@@ -420,7 +420,7 @@ export class PositionSimulatorComponent implements OnInit {
 
     forkJoin(requests).subscribe((results: EncounterStatistics[]) => {
       let popUps = this.encounters.reduce((map, encounter, index) => {
-        map.set(encounter.id!, this.encounterDrawService.generateEncounterPopUp(encounter, results[index]));
+        map.set(encounter.id!, this.encounterDrawService.generateEncounterPopUp(encounter));
         return map;
       }, new Map<string, string>());
 

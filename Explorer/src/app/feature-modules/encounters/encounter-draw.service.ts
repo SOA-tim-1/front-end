@@ -14,7 +14,7 @@ export class EncounterDrawService {
 
   constructor(private imageService: ImageService, private executionService: EncounterExecutionService, private toastr: ToastrService) { }
 
-  generateEncounterPopUp(encounter: Encounter, encounterStats: EncounterStatistics): string {
+  generateEncounterPopUp(encounter: Encounter): string {
     let specifics = '';
     switch (encounter.type) {
       case EncounterType.Social:
@@ -27,16 +27,15 @@ export class EncounterDrawService {
         specifics = this.generateMiscEncounterSpecifics(encounter);
         break;
     }
-    return this.generateCommonEncounterHTML(encounter, encounterStats) + specifics + this.generateEncounterButton(encounter.id!);
+    return this.generateCommonEncounterHTML(encounter) + specifics + this.generateEncounterButton(encounter.id!);
   }
 
-  generateCommonEncounterHTML(encounter: Encounter, encounterStats: EncounterStatistics): string {
+  generateCommonEncounterHTML(encounter: Encounter): string {
     return `<div style="text-align: center; padding: 10px; padding-bottom: 0px; font-size: 1.15em;">
               <h2 style="font-weight: bold; margin-bottom: 10px;">${encounter.name}</h2>
               <p style="margin-bottom: 10px;">${encounter.description}</p>
               <p style="margin-bottom: 10px;"><strong>Type:</strong> ${EncounterType[encounter.type]}</p>
               <p style="margin-bottom: 10px;"><strong>XP:</strong> ${encounter.xp}</p>
-              <p style="margin-bottom: 10px;"><strong>Success Rate:</strong> ${encounterStats.completedCount} / ${encounterStats.completedCount + encounterStats.abandonedCount} completed</p>
             </div>`;
   }
   
@@ -57,7 +56,7 @@ export class EncounterDrawService {
   
   generateEncounterButton(encounterId: string): string {
     return `<div style="display: flex; justify-content: center;">
-              <button onclick="activateEncounter(${encounterId})" style="background-color: #315149; border: none; border-radius: 20px; padding: 10px 20px; font-size: 1.2em; color: white; transition: all 0.3s ease 0s; cursor: pointer; outline: none;">
+              <button onclick="activateEncounter('${encounterId}')" style="background-color: #315149; border: none; border-radius: 20px; padding: 10px 20px; font-size: 1.2em; color: white; transition: all 0.3s ease 0s; cursor: pointer; outline: none;">
                 Activate Encounter
               </button>
             </div>`;

@@ -52,20 +52,12 @@ export class EncountersExecutionComponent implements AfterViewInit, OnDestroy {
 
   loadEncounters(): void {
     this.encounterService.getActiveEncounters().subscribe((result: PagedResults<Encounter>) => {
-      this.encounters = result.results;
-    
-      let requests = this.encounters.map(encounter =>
-        this.encounterService.getStatisticsForEncounter(encounter.id!)
-      );
-    
-      forkJoin(requests).subscribe((results: EncounterStatistics[]) => {
-        let popUps = this.encounters.reduce((map, encounter, index) => {
-          map.set(encounter.id!, this.encounterDrawService.generateEncounterPopUp(encounter, results[index]));
-          return map;
+        this.encounters = result.results;
+        let popUps = this.encounters.reduce((map, encounter) => {
+            map.set(encounter.id!, this.encounterDrawService.generateEncounterPopUp(encounter));
+            return map;
         }, new Map<string, string>());
-    
         this.mapComponent.drawEncounters(this.encounters, popUps);
-      });
     });
   }
 
@@ -80,19 +72,14 @@ export class EncountersExecutionComponent implements AfterViewInit, OnDestroy {
     if (this.renderHiddenLoc) {
       encountersToDraw = encountersToDraw.concat(this.encounters.filter(e => e.type === EncounterType.HiddenLocation));
     }
-    let requests = encountersToDraw.map(encounter =>
-      this.encounterService.getStatisticsForEncounter(encounter.id!)
-    );
-  
-    forkJoin(requests).subscribe((results: EncounterStatistics[]) => {
-      let popUps = encountersToDraw.reduce((map, encounter, index) => {
-        map.set(encounter.id!, this.encounterDrawService.generateEncounterPopUp(encounter, results[index]));
-        return map;
-      }, new Map<string, string>());
-  
-      this.mapComponent.drawEncounters(encountersToDraw, popUps);
-    });
-  }
+
+    let popUps = encountersToDraw.reduce((map, encounter) => {
+      map.set(encounter.id!, this.encounterDrawService.generateEncounterPopUp(encounter));
+      return map;
+    }, new Map<string, string>());
+
+    this.mapComponent.drawEncounters(encountersToDraw, popUps);
+}
 
   abandonEncounter(): void {
     this.executionService.abandon(this.encounterExecution.id).subscribe({
