@@ -41,12 +41,12 @@ export class LoginComponent implements OnInit {
       this.isDisabled = true;
       this.authService.login(login).subscribe({
         next: () => {
-          if (this.authService.user$.value.role === 'tourist') {
+          /*if (this.authService.user$.value.role === 'tourist') {
             this.router.navigate(['/user-location']);
           } else {
             this.router.navigate(['/']);
-          }
-
+          }*/
+          this.router.navigate(['/']);
           this.toastr.success('Login successful');
           this.isDisabled = false;
         },
