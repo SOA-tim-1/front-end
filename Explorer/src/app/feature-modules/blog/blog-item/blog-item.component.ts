@@ -3,6 +3,7 @@ import { Blog, Status } from '../model/blog.model';
 import { Router } from '@angular/router';
 import { FollowersService } from '../../layout/user-profile/followers-dialog/followers.service';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
+import { IsFollowingMessage } from '../../layout/model/IsFoolowingMessage.model';
 
 @Component({
   selector: 'xp-blog-item',
@@ -33,9 +34,9 @@ export class BlogItemComponent implements OnInit {
   openBlog() {
     // this.router.navigate(['blog/' + this.blog.id]);
     this.followerService.checkIfIsFollowingUser(this.authService.user$.getValue().id, this.blog.authorId).subscribe({
-      next : (isFollowing : boolean) =>
+      next : (isFollowing : IsFollowingMessage) =>
         {
-        if(isFollowing){
+        if(isFollowing.exists){
           this.router.navigate(['blog/' + this.blog.id]);
         }else{
           this.router.navigate(['follow-blog-author/' + this.blog.id]);

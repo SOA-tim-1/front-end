@@ -16,6 +16,9 @@ import { Observable, Subscription, of } from 'rxjs';
 import { TourExecutionStatsService } from '../../tour-execution/tour-execution-stats.service';
 import { EncounterExecutionService } from '../../encounters/encounter-execution.service';
 import { EncounterStatistics } from '../../encounters/model/encounters.model';
+import { SuggestionsMessage } from '../model/SuggestionsMessage.model';
+import { FollowersMessage } from '../model/FollowersMessage.model';
+import { FollowsMessage } from '../model/FollowsMessage.model';
 
 @Component({
   selector: 'xp-user-profile',
@@ -122,18 +125,18 @@ export class UserProfileComponent implements OnInit,OnDestroy {
 
     getFollowers():void{
       this.followersService.getFollowers(this.authService.user$.getValue().id).subscribe({
-        next: (result: number[]) => {
+        next: (result: FollowersMessage) => {
           //this.followers = result.results.filter(fol => fol.followedId === this.user?.id);
-          this.numOfFollowers = result.length
+          this.numOfFollowers = result.followers.length
         }
       }) 
     }
   
     getFollowing():void{
       this.followersService.getFollows(this.authService.user$.getValue().id).subscribe({
-        next: (result: number[]) => {
+        next: (result: FollowsMessage) => {
           //this.following = result.results.filter(fol => fol.followingId === this.user?.id);
-          this.numOfFollowing = result.length
+          this.numOfFollowing = result.follows.length
         }
       }) 
     }
@@ -190,9 +193,9 @@ export class UserProfileComponent implements OnInit,OnDestroy {
       this.notFollowing = []
 
       this.followersService.getSuggestedUsersIds(this.authService.user$.getValue().id).subscribe({
-        next : (result : number[]) =>{
-          result.forEach((id) =>{
-            this.authService.getUserById(id).subscribe({
+        next : (result : SuggestionsMessage) =>{
+          result.suggestions.forEach((id) =>{
+            this.authService.getUserById(parseInt(id,10)).subscribe({
               next : (res : User) =>{
                 this.notFollowing.push(res)
               }

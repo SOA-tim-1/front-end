@@ -12,6 +12,9 @@ import { NotificationModel } from '../notification-dialog/notification.model';
 import { NotificationService } from '../notification-dialog/notification.service';
 import {MatIconModule} from'@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { IsFollowingMessage } from '../../model/IsFoolowingMessage.model';
+import { FollowersMessage } from '../../model/FollowersMessage.model';
+import { FollowsMessage } from '../../model/FollowsMessage.model';
 
 @Component({
   selector: 'xp-followers-dialog',
@@ -68,11 +71,13 @@ export class FollowersDialogComponent implements OnInit,OnDestroy{
   
   getFollowers():void{
     this.followersService.getFollowers(this.authService.user$.getValue().id).subscribe({
-      next: (result: number[]) => {
+      next: (result: FollowersMessage) => {
         //this.followers = result.results.filter(fol => fol.followedId === this.userId);
-        this.followersIds = result;
-        this.getUsernamesForFollowers(result);
-        this.getStatusForFollowers(result);
+        const followersAsNumbers = result.followers.map(str => parseInt(str, 10));
+        this.followersIds = followersAsNumbers;
+
+        this.getUsernamesForFollowers(followersAsNumbers);
+        this.getStatusForFollowers(followersAsNumbers);
       }
     }) 
   }
@@ -89,10 +94,11 @@ export class FollowersDialogComponent implements OnInit,OnDestroy{
 
   getFollowing():void{
     this.followersService.getFollows(this.authService.user$.getValue().id).subscribe({
-      next: (result: number[]) => {
+      next: (result: FollowsMessage) => {
         //this.following = result.results.filter(fol => fol.followingId === this.userId);
-        this.followingIds = result;
-        this.getUsernamesForFollowing(result);
+        const followersAsNumbers = result.follows.map(str => parseInt(str, 10));
+        this.followingIds = followersAsNumbers;
+        this.getUsernamesForFollowing(followersAsNumbers);
       }
     }) 
   }
@@ -236,8 +242,8 @@ isFollowing(followerId: number) : boolean{
 getStatusForFollowers(followersIds : number[]): void {
   followersIds.forEach((id) => {
     this.followersService.checkIfIsFollowingUser(this.authService.user$.getValue().id, id).subscribe({
-      next : (result : boolean)=>{
-        this.followersStatus[id] = result;
+      next : (result : IsFollowingMessage)=>{
+        this.followersStatus[id] = result.exists;
         console.log(result)
       }
     })

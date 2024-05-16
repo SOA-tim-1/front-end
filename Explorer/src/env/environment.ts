@@ -12,4 +12,9 @@ export const environment = {
     production: false,
     apiHost: 'http://localhost:8092/api/',
   };
+
+  export const gRPCenv= {
+    production: false,
+    apiHost: 'http://localhost:8000/api/',
+  };
   
