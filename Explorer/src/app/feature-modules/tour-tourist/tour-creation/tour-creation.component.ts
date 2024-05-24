@@ -174,7 +174,7 @@ export class TourCreationComponent {
       description: this.tourForm.value.description || '',
       tags: this.tourForm.value.tags?.join(',') || '',
       difficult: Number(this.tourForm.value.difficult) || 0,
-      status: 0,
+      status: "DRAFT",
       price: 0,
       distance: 0,
       travelTimeAndMethod: [],

@@ -5,6 +5,7 @@ import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Checkpoint } from '../model/checkpoint.model';
 import { MapComponent } from 'src/app/shared/map/map.component';
 import { TourDataService } from '../tourData.service';
+import { CheckpointListMessage } from '../model/CheckpointListMessage.model';
 
 @Component({
   selector: 'xp-tour-checkpoints-display',
@@ -41,8 +42,8 @@ export class TourCheckpointsDisplayComponent {
 
   getCheckpoints(id: number): void {
     this.checkpointService.getCheckpoints(id).subscribe({
-      next: (result: PagedResults<Checkpoint>) => {
-        this.tourCheckpoints = result.results;
+      next: (result : CheckpointListMessage) => {
+        this.tourCheckpoints = result.checkpoints;
 
         if(this.tourCheckpoints.length === 0){
           this.isCheckpointsArrayEmpty = true

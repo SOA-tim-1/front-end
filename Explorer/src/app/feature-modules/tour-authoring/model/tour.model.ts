@@ -10,7 +10,7 @@ export interface Tour{
     tags: string,
     difficult: number,
     price: number,
-    status: number,
+    status: string,
     publishTime : Date,
     archiveTime : Date,
     checkpoints: Checkpoint[],

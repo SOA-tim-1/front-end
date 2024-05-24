@@ -2,7 +2,7 @@
     <div class="tour-header">
         <h2>{{tour.name}}</h2>
         <mat-checkbox 
-            *ngIf="isSelectMode && tour.status == 1" 
+            *ngIf="isSelectMode && tour.status == 'PUBLISHED'" 
             class ="checkbox"
             [color] = "'primary'"
             (change) = "checkSelected($event)"></mat-checkbox>

@@ -23,23 +23,23 @@ export class FollowersService {
   // } 
 
   getFollowers(id : number) : Observable<FollowersMessage> {
-    return this.http.get<FollowersMessage>(gRPCenv.apiHost + 'followers/users/get-followers/' + id);
+    return this.http.get<FollowersMessage>(gRPCenv.apiHost + 'follower/get-followers/' + id);
   } 
 
   getFollows(id : number) : Observable<FollowsMessage> {
-    return this.http.get<FollowsMessage>(gRPCenv.apiHost + 'followers/users/get-follows/' + id);
+    return this.http.get<FollowsMessage>(gRPCenv.apiHost + 'follower/get-follows/' + id);
   }
   
   checkIfIsFollowingUser(followingId : number, followedId: number) : Observable<IsFollowingMessage>{
-    return this.http.get<IsFollowingMessage>(gRPCenv.apiHost + "followers/users/check-following/" + followingId + "/" + followedId)
+    return this.http.get<IsFollowingMessage>(gRPCenv.apiHost + "follower/check-following/" + followingId + "/" + followedId)
   }
 
   getSuggestedUsersIds(loggedUserId : number): Observable<SuggestionsMessage>{
-    return this.http.get<SuggestionsMessage>(gRPCenv.apiHost + "followers/users/get-suggestions/" + loggedUserId);
+    return this.http.get<SuggestionsMessage>(gRPCenv.apiHost + "follower/get-suggestions/" + loggedUserId);
   }
 
   createFollower(follower:Followers) : Observable<Followers> {
-    return this.http.post<Followers>(gRPCenv.apiHost + 'followers/users/follow-connection', follower);
+    return this.http.post<Followers>(gRPCenv.apiHost + 'follower/follow-connection', follower);
   }
 
   // createFollower(follower:Followers) : Observable<Followers> {
@@ -47,7 +47,7 @@ export class FollowersService {
   // }
 
   deleteFollower(followedId: number,followingId:number): Observable<Followers> {
-    return this.http.delete<Followers>(gRPCenv.apiHost + 'followers/users/delete-follow-connection/' + followingId + "/" + followedId);
+    return this.http.delete<Followers>(gRPCenv.apiHost + 'follower/delete-follow-connection/' + followingId + "/" + followedId);
   }
 
   // deleteFollower(followedId: number,followingId:number): Observable<Followers> {

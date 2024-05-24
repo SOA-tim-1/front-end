@@ -4,6 +4,7 @@ import { TourDataService } from '../tourData.service';
 import { TourAuthoringService } from '../tour-authoring.service';
 import { Tour } from '../model/tour.model';
 import { CheckpointService } from '../checkpoint.service';
+import { CheckpointListMessage } from '../model/CheckpointListMessage.model';
 
 @Component({
   selector: 'xp-publish-tour',
@@ -32,8 +33,8 @@ export class PublishTourComponent {
         next: (result) =>{
           this.tour = result;
           this.checkpointService.getCheckpoints(this.tourId).subscribe({
-            next : (checkpoints) =>{
-              this.tour.checkpoints = checkpoints.results;
+            next : (result : CheckpointListMessage) =>{
+              this.tour.checkpoints = result.checkpoints;
             }
           })
 

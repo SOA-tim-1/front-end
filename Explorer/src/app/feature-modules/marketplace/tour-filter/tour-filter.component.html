@@ -68,7 +68,7 @@
         <!-- Loop through your filtered tour data to populate the table -->
         <tr *ngFor="let tour of filteredTours">
           <!-- Dodajte uslov za prikazivanje samo tura sa statusom 1 -->
-          <ng-container *ngIf="tour.status === 1">
+          <ng-container *ngIf="tour.status === 'PUBLISHED'">
             <td>{{ calculateName(tour.authorId) }}</td>
             <td>{{ tour.name }}</td>
             <td>{{ tour.description }}</td>

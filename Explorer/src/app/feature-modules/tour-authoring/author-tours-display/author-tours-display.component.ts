@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TourBundleDialogComponent } from '../tour-bundle-dialog/tour-bundle-dialog.component';
 import { TourStatus } from '../model/tour-status';
 import { ToastrService } from 'ngx-toastr';
+import { TourListMessage } from '../model/TourListMessage.model';
 
 @Component({
   selector: 'xp-author-tours-display',
@@ -57,8 +58,8 @@ export class AuthorToursDisplayComponent {
     this.selectedToursPrice = 0;
 
     this.service.getAuthorTours(this.user.id).subscribe({
-      next: (result: PagedResults<Tour>) => {
-        this.tours = result.results;
+      next: (result: TourListMessage) => {
+        this.tours = result.tours;
       }
     });
   }

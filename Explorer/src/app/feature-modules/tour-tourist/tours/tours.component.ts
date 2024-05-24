@@ -3,6 +3,7 @@ import { Tour } from '../../tour-authoring/model/tour.model';
 import { TourAuthoringService } from '../../tour-authoring/tour-authoring.service';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
+import { TourListMessage } from '../../tour-authoring/model/TourListMessage.model';
 
 @Component({
   selector: 'xp-tours',
@@ -19,8 +20,8 @@ export class ToursComponent {
       this.authService.user$.subscribe(user => {
         this.user = user;
       });
-      this.tourService.getAuthorTours(this.user.id).subscribe((result) => {
-        this.tours = result.results;
+      this.tourService.getAuthorTours(this.user.id).subscribe((result : TourListMessage) => {
+        this.tours = result.tours;
       });
 
     }

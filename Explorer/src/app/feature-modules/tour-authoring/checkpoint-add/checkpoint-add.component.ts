@@ -13,6 +13,7 @@ import { TourAuthoringService } from '../tour-authoring.service';
 import { TourDataService } from '../tourData.service';
 import { TransferValue } from '../model/transfer-value.model';
 import { EncounterService } from '../../encounters/encounter.service';
+import { CheckpointListMessage } from '../model/CheckpointListMessage.model';
 
 
 @Component({
@@ -81,16 +82,16 @@ export class CheckpointAddComponent implements OnInit {
 
   getCheckpoints(id: number): void {
     this.checkpointService.getCheckpoints(id).subscribe({
-      next: (result: PagedResults<Checkpoint>) => {
+      next: (result: CheckpointListMessage) => {
 
-        for(let i=0; i<result.results.length; i++){
-          this.encounterService.getForCheckpoint(result.results[i].id!).subscribe({
+        for(let i=0; i<result.checkpoints.length; i++){
+          this.encounterService.getForCheckpoint(result.checkpoints[i].id!).subscribe({
             next(enc: any){
-              result.results[i].encounterId = enc.id;
+              result.checkpoints[i].encounterId = enc.id;
             }
           })
         }
-        this.addedCheckpoints = result.results;
+        this.addedCheckpoints = result.checkpoints;
         
         this.drawCheckpoints();
         
