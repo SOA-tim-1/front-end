@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PagedResults } from "src/app/shared/model/paged-results.model";
-import { Encounter, EncounterStatistics } from "./model/encounters.model";
-import { environment, goEnvironment } from "src/env/environment";
+import { Encounter, EncounterMessage, EncounterStatistics } from "./model/encounters.model";
+import { environment, gRPCenv } from "src/env/environment";
 import { Observable } from "rxjs";
 import { TextWrapper } from 'src/app/shared/model/text-wrapper.model';
 
@@ -13,9 +13,9 @@ export class EncounterService {
 
     constructor(private http: HttpClient) { }
 
-    getAllEncounters(): Observable<PagedResults<Encounter>> {
-        return this.http.get<PagedResults<Encounter>>(
-            environment.apiHost + 'administration/encounter')
+    getAllEncounters(): Observable<EncounterMessage> {
+        return this.http.get<EncounterMessage>(
+            gRPCenv.apiHost + 'encounter')
     }
 
     getForCheckpoint(id: number): Observable<Encounter> {
@@ -34,23 +34,23 @@ export class EncounterService {
     }
 
 
-    getActiveEncounters(): Observable<PagedResults<Encounter>> {
-        return this.http.get<PagedResults<Encounter>>(
-            environment.apiHost + 'tourist/execution/encounter/allEncounters')
+    getActiveEncounters(): Observable<EncounterMessage> {
+        return this.http.get<EncounterMessage>(
+            gRPCenv.apiHost + 'encounter/active')
     }
 
     deleteEncounter(id: string): Observable<Encounter> {
         return this.http.delete<Encounter>(
-            environment.apiHost + 'administration/encounter/' + id);
+            gRPCenv.apiHost + 'encounter/' + id);
     }
 
     addEncounter(encounter: Encounter): Observable<Encounter> {
         return this.http.post<Encounter>(
-            environment.apiHost + 'administration/encounter', encounter);
+            gRPCenv.apiHost + 'encounter', encounter);
     }
 
     updateEncounter(encounter: Encounter): Observable<Encounter> {
         return this.http.put<Encounter>(
-            environment.apiHost + 'administration/encounter', encounter);
+            gRPCenv.apiHost + 'encounter', encounter);
     }
 }

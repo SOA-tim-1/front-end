@@ -34,3 +34,7 @@ export interface EncounterStatistics{
     completedCount: number;
     abandonedCount: number;
 }
+
+export interface EncounterMessage{
+    encounters: Encounter[];
+}
