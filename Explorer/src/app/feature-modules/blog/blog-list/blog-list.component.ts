@@ -6,6 +6,7 @@ import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { MatSelectChange } from '@angular/material/select';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
+import { BlogMessage } from '../model/blog-message.model';
 
 @Component({
   selector: 'xp-blog-list',
@@ -44,9 +45,9 @@ export class BlogListComponent implements OnInit {
 
   getAllBlogs(): void {
     this.blogService.getBlogs().subscribe({
-      next: (result: PagedResults<Blog>) => {
-        this.blogs = result.results;
-        this.filteredBlogs = result.results;
+      next: (result: BlogMessage) => {
+        this.blogs = result.blogs;
+        this.filteredBlogs = result.blogs;
       },
       error: () => {},
     });

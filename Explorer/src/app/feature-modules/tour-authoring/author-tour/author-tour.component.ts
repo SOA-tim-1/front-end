@@ -88,7 +88,7 @@ export class AuthorTourComponent {
     this.isAddEquipment = true;
     this.service.getAllEquipments().subscribe({
       next : (result) =>{
-        this.allEquipments = result.results;
+        this.allEquipments = result.equipments;
 
 
         const remainingEquipments = this.allEquipments.filter(

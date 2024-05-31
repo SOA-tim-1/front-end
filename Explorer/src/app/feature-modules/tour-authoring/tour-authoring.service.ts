@@ -16,6 +16,7 @@ import TourBundle from './model/tour-bundle';
 import { Checkpoint } from './model/checkpoint.model';
 import { TourListMessage } from './model/TourListMessage.model';
 import { EmptyMessage } from './model/EmptyMessage.model';
+import { EquipmentMessage } from '../administration/model/equipment-message.model';
 
 @Injectable({
   providedIn: 'root',
@@ -102,8 +103,8 @@ export class TourAuthoringService {
     return this.http.put<EmptyMessage>(gRPCenv.apiHost + 'tour/archive/' + tourId, {});
   }
 
-  getAllEquipments(): Observable<PagedResults<Equipment>> {
-    return this.http.get<PagedResults<Equipment>>(
+  getAllEquipments(): Observable<EquipmentMessage> {
+    return this.http.get<EquipmentMessage>(
       environment.apiHost + 'author/equipment'
     );
   }
