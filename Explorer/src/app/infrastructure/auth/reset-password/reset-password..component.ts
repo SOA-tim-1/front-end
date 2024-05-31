@@ -32,8 +32,8 @@ export class ResetPasswordComponent implements OnInit {
 
   login(): void {
     const login: Login = {
-      username: this.resetForm.value.username || "",
-      password: this.resetForm.value.password || "",
+      Username: this.resetForm.value.username || "",
+      Password: this.resetForm.value.password || "",
     };
 
     if (this.resetForm.valid) {
