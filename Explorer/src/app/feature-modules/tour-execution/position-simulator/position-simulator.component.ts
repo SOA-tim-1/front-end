@@ -31,6 +31,7 @@ import { AvailableTourPreviewComponent } from '../../marketplace/available-tour-
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { Tour } from '../../tour-authoring/model/tour.model';
 import { HttpErrorResponse } from '@angular/common/http';
+import { CheckpointListMessage } from '../../tour-authoring/model/CheckpointListMessage.model';
 
 
 @Component({
@@ -128,8 +129,8 @@ export class PositionSimulatorComponent implements OnInit {
 
   getCheckpoints(id: number): void {
     this.checkpointService.getCheckpoints(id).subscribe({
-      next: (result: PagedResults<Checkpoint>) => {
-        this.checkpoints = result.results;
+      next: (result: CheckpointListMessage) => {
+        this.checkpoints = result.checkpoints;
         this.drawCheckpoints();
       },
       error: (err: any) => {

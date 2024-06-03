@@ -45,10 +45,10 @@ export class AuthorTourComponent {
   }
 
   private updateStatusFlags(): void {
-    if (this.tour.status === 0) {
+    if (this.tour.status === 'DRAFT') {
       this.isPublished = false;
       this.isArchived = false;
-    } else if (this.tour.status === 1) {
+    } else if (this.tour.status === 'PUBLISHED') {
       this.isPublished = true;
       this.isArchived = false;
     } else {
@@ -60,11 +60,11 @@ export class AuthorTourComponent {
 
 
 
-  transformStatus(numberValue: number): string{
-    if(numberValue === 0){
+  transformStatus(numberValue: string): string{
+    if(numberValue === 'DRAFT'){
       return "Draft";
     }
-    else if(numberValue === 1){
+    else if(numberValue === 'PUBLISHED'){
       return "Published"
     }
     else return "Archived"
@@ -88,7 +88,7 @@ export class AuthorTourComponent {
     this.isAddEquipment = true;
     this.service.getAllEquipments().subscribe({
       next : (result) =>{
-        this.allEquipments = result.results;
+        this.allEquipments = result.equipments;
 
 
         const remainingEquipments = this.allEquipments.filter(

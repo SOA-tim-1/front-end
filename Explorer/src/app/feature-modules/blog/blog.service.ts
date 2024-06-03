@@ -3,9 +3,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Comment } from './model/comment.model';
-import { environment } from 'src/env/environment';
+import { environment, gRPCenv } from 'src/env/environment';
 import { Blog } from './model/blog.model';
 import { Rating } from './model/rating.model';
+import { BlogMessage } from './model/blog-message.model';
 
 @Injectable({
   providedIn: 'root',
@@ -45,12 +46,12 @@ export class BlogService {
     return this.http.post<Blog>(environment.apiHost + 'blogs', blog);
   }
 
-  getBlogs(): Observable<PagedResults<Blog>> {
-    return this.http.get<PagedResults<Blog>>(environment.apiHost + 'blogs');
+  getBlogs(): Observable<BlogMessage> {
+    return this.http.get<BlogMessage>(gRPCenv.apiHost + 'blogs');
   }
 
   getBlogById(id: number): Observable<Blog> {
-    return this.http.get<Blog>(environment.apiHost + 'blogs/' + id);
+    return this.http.get<Blog>(gRPCenv.apiHost + 'blogs/' + id);
   }
 
   voteBlog(blogId: number, rating: Rating) {

@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { EncounterService } from '../encounter.service';
-import { Encounter, EncounterType } from '../model/encounters.model';
+import { Encounter, EncounterMessage, EncounterType } from '../model/encounters.model';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { ImageService } from 'src/app/shared/image.service';
 import { EncounterDrawService } from '../encounter-draw.service';
@@ -34,10 +34,10 @@ export class EncounterComponent implements OnInit {
 
   getAllEncounters(): void {
     this.service.getAllEncounters().subscribe(
-      (pagedResults: PagedResults<Encounter>) => {
-        this.socialEncounters = pagedResults.results.filter((e) => e.type === EncounterType.Social);
-        this.hiddenLocationEncounters = pagedResults.results.filter((e) => e.type === EncounterType.HiddenLocation);
-        this.miscEncounters = pagedResults.results.filter((e) => e.type === EncounterType.Misc);
+      (result: EncounterMessage) => {
+        this.socialEncounters = result.encounters.filter((e) => e.type === EncounterType.Social);
+        this.hiddenLocationEncounters = result.encounters.filter((e) => e.type === EncounterType.HiddenLocation);
+        this.miscEncounters = result.encounters.filter((e) => e.type === EncounterType.Misc);
       },
       (error) => {
         console.error('Error fetching encounters:', error);

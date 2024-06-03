@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable, switchMap, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { TokenStorage } from './jwt/token.service';
-import { environment } from 'src/env/environment';
+import { environment, gRPCenv } from 'src/env/environment';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Login } from './model/login.model';
 import { AuthenticationResponse } from './model/authentication-response.model';
@@ -28,10 +28,12 @@ export class AuthService {
 
   login(login: Login): Observable<AuthenticationResponse> {
     return this.http
-      .post<AuthenticationResponse>(environment.apiHost + 'users/login', login)
+      .post<AuthenticationResponse>(gRPCenv.apiHost + 'users/login', login)
       .pipe(
-        tap((authenticationResponse) => {
-          this.tokenStorage.saveAccessToken(authenticationResponse.accessToken);
+        tap((response: any) => {
+          const authenticationResponse = response as AuthenticationResponse;
+          console.log(authenticationResponse.AccessToken);
+          this.tokenStorage.saveAccessToken(authenticationResponse.AccessToken);
           this.setUser();
         })
       );
@@ -39,10 +41,10 @@ export class AuthService {
 
   register(registration: Registration): Observable<AuthenticationResponse> {
     return this.http
-      .post<AuthenticationResponse>(environment.apiHost + 'users', registration)
+      .post<AuthenticationResponse>(gRPCenv.apiHost + 'users', registration)
       .pipe(
         tap((authenticationResponse) => {
-          this.tokenStorage.saveAccessToken(authenticationResponse.accessToken);
+          this.tokenStorage.saveAccessToken(authenticationResponse.AccessToken);
           this.setUser();
         })
       );
@@ -77,7 +79,7 @@ export class AuthService {
   }
 
   getNameById(id: number): Observable<People> {
-    return this.http.get<People>('http://localhost:44333/api/person/'+id); 
+    return this.http.get<People>(gRPCenv.apiHost + 'person/'+id); 
   }
 
   updateUserLocation(person: People): Observable<People> {
@@ -92,7 +94,7 @@ export class AuthService {
 
   getUserById(id: number): Observable<User> {
     return this.http.get<User>(
-      'http://localhost:44333/api/users/allUsers/GetById/' + id
+      gRPCenv.apiHost + 'users/' + id
     );
   }
 }

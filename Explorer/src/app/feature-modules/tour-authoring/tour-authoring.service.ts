@@ -1,6 +1,6 @@
 import { Destination } from './model/destination.model';
 import { Observable, catchError, throwError } from 'rxjs';
-import { environment } from 'src/env/environment';
+import { environment, gRPCenv } from 'src/env/environment';
 import { TextWrapper } from 'src/app/shared/model/text-wrapper.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -14,6 +14,9 @@ import { TourSale } from './model/tour-sale.model';
 import { TourSaleConnection } from './model/tour-sale-connection.model';
 import TourBundle from './model/tour-bundle';
 import { Checkpoint } from './model/checkpoint.model';
+import { TourListMessage } from './model/TourListMessage.model';
+import { EmptyMessage } from './model/EmptyMessage.model';
+import { EquipmentMessage } from '../administration/model/equipment-message.model';
 
 @Injectable({
   providedIn: 'root',
@@ -21,35 +24,28 @@ import { Checkpoint } from './model/checkpoint.model';
 export class TourAuthoringService {
   constructor(private http: HttpClient) {}
 
-  getAuthorTours(authorId: number): Observable<PagedResults<Tour>> {
-    const params = new HttpParams().set('authorId', authorId);
-    return this.http.get<PagedResults<Tour>>(
-      environment.apiHost + 'tour/authortours',
-      { params }
-    );
+  getAuthorTours(authorId: number): Observable<TourListMessage> {
+    return this.http.get<TourListMessage>(gRPCenv.apiHost + 'tour/authortours/' + authorId);
   }
 
-  getPublishedAuthorTours(authorId: number): Observable<PagedResults<Tour>> {
-    const params = new HttpParams().set('authorId', authorId);
-    return this.http.get<PagedResults<Tour>>(
-      environment.apiHost + 'tour/publishedauthortours',
-      { params }
-    );
-  }
+  // getPublishedAuthorTours(authorId: number): Observable<PagedResults<Tour>> {
+  //   const params = new HttpParams().set('authorId', authorId);
+  //   return this.http.get<PagedResults<Tour>>(
+  //     environment.apiHost + 'tour/publishedauthortours',
+  //     { params }
+  //   );
+  // }
 
   addTour(tour: Tour): Observable<Tour> {
-    return this.http.post<Tour>(environment.apiHost + 'tour', tour);
+    return this.http.post<Tour>(gRPCenv.apiHost + 'tour', tour);
   }
 
   updateTour(tour: Tour): Observable<Tour> {
-    return this.http.put<Tour>(environment.apiHost + 'tour/updatetour', tour);
+    return this.http.put<Tour>(gRPCenv.apiHost + 'tour/updatetour', tour);
   }
 
   getTourById(id: number): Observable<Tour> {
-    const params = new HttpParams().set('tourId', id);
-    return this.http.get<Tour>(environment.apiHost + 'tour/singletour', {
-      params,
-    });
+    return this.http.get<Tour>(gRPCenv.apiHost + 'tour/' + id);
   }
 
   getEquipmentForTour(
@@ -98,22 +94,17 @@ export class TourAuthoringService {
     );
   }
 
-  publishTour(tourId: number): Observable<Tour> {
-    return this.http.put<Tour>(
-      environment.apiHost + 'tour/publishTour',
-      tourId
-    );
+  publishTour(tourId: number): Observable<EmptyMessage> {
+    return this.http.put<EmptyMessage>(
+      gRPCenv.apiHost + 'tour/publish/' + tourId, {});
   }
 
-  archiveTour(tourId: number): Observable<Tour> {
-    return this.http.put<Tour>(
-      environment.apiHost + 'tour/archiveTour',
-      tourId
-    );
+  archiveTour(tourId: number): Observable<EmptyMessage> {
+    return this.http.put<EmptyMessage>(gRPCenv.apiHost + 'tour/archive/' + tourId, {});
   }
 
-  getAllEquipments(): Observable<PagedResults<Equipment>> {
-    return this.http.get<PagedResults<Equipment>>(
+  getAllEquipments(): Observable<EquipmentMessage> {
+    return this.http.get<EquipmentMessage>(
       environment.apiHost + 'author/equipment'
     );
   }
@@ -143,11 +134,11 @@ export class TourAuthoringService {
     return this.http.get<PagedResults<Tour>>(environment.apiHost + 'tour');
   }
 
-  getAllToursForAuthor(userId: number): Observable<PagedResults<Tour>> {
-    return this.http.get<PagedResults<Tour>>(
-      environment.apiHost + 'tour/authortours'
-    );
-  }
+  // getAllToursForAuthor(userId: number): Observable<PagedResults<Tour>> {
+  //   return this.http.get<PagedResults<Tour>>(
+  //     environment.apiHost + 'tour/authortours'
+  //   );
+  // }
 
   addTourSale(tourSale: TourSale): Observable<TourSale> {
     return this.http.post<TourSale>(

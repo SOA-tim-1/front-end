@@ -1,6 +1,6 @@
 
 export interface TourStatus {
     tourId: number;
-    status: number;
+    status: string;
     tourName: string;
 }

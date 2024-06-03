@@ -5,7 +5,11 @@ import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { Followers } from './followers.model';
 import { User } from 'src/app/infrastructure/auth/model/user.model';
-import { environment, goFollowerEnviroment } from 'src/env/environment';
+import { environment, gRPCenv, goFollowerEnviroment } from 'src/env/environment';
+import { IsFollowingMessage } from '../../model/IsFoolowingMessage.model';
+import { SuggestionsMessage } from '../../model/SuggestionsMessage.model';
+import { FollowersMessage } from '../../model/FollowersMessage.model';
+import { FollowsMessage } from '../../model/FollowsMessage.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,27 +22,24 @@ export class FollowersService {
   //   return this.http.get<PagedResults<Followers>>(environment.apiHost + 'followers/users');
   // } 
 
-  getFollowers(id : number) : Observable<number[]> {
-    return this.http.get<number[]>(environment.apiHost + 'followers/users/get-followers/' + id);
+  getFollowers(id : number) : Observable<FollowersMessage> {
+    return this.http.get<FollowersMessage>(gRPCenv.apiHost + 'follower/get-followers/' + id);
   } 
 
-  getFollows(id : number) : Observable<number[]> {
-    return this.http.get<number[]>(environment.apiHost + 'followers/users/get-follows/' + id);
+  getFollows(id : number) : Observable<FollowsMessage> {
+    return this.http.get<FollowsMessage>(gRPCenv.apiHost + 'follower/get-follows/' + id);
   }
   
-  checkIfIsFollowingUser(followingId : number, followedId: number) : Observable<boolean>{
-    const params = new HttpParams()
-      .set('followedId', followedId.toString())
-      .set('followingId', followingId.toString());
-    return this.http.get<boolean>(environment.apiHost + "followers/users/check-following", {params : params})
+  checkIfIsFollowingUser(followingId : number, followedId: number) : Observable<IsFollowingMessage>{
+    return this.http.get<IsFollowingMessage>(gRPCenv.apiHost + "follower/check-following/" + followingId + "/" + followedId)
   }
 
-  getSuggestedUsersIds(loggedUserId : number): Observable<number[]>{
-    return this.http.get<number[]>(environment.apiHost + "followers/users/get-suggestions/" + loggedUserId);
+  getSuggestedUsersIds(loggedUserId : number): Observable<SuggestionsMessage>{
+    return this.http.get<SuggestionsMessage>(gRPCenv.apiHost + "follower/get-suggestions/" + loggedUserId);
   }
 
   createFollower(follower:Followers) : Observable<Followers> {
-    return this.http.post<Followers>(environment.apiHost + 'followers/users/follow-connection', follower);
+    return this.http.post<Followers>(gRPCenv.apiHost + 'follower/follow-connection', follower);
   }
 
   // createFollower(follower:Followers) : Observable<Followers> {
@@ -46,11 +47,7 @@ export class FollowersService {
   // }
 
   deleteFollower(followedId: number,followingId:number): Observable<Followers> {
-    const params = new HttpParams()
-      .set('followedId', followedId.toString())
-      .set('followingId', followingId.toString());
-
-    return this.http.delete<Followers>(environment.apiHost + 'followers/users/delete-follow-connection',{params : params});
+    return this.http.delete<Followers>(gRPCenv.apiHost + 'follower/delete-follow-connection/' + followingId + "/" + followedId);
   }
 
   // deleteFollower(followedId: number,followingId:number): Observable<Followers> {

@@ -59,7 +59,7 @@ export class TourBundlesOverviewComponent implements OnInit{
     const tourBundle = this.bundles.find(bundle => bundle.id === id);
 
     if (tourBundle) {
-      const publishedToursCount = tourBundle.tours.filter(tour => tour.status == 1).length;
+      const publishedToursCount = tourBundle.tours.filter(tour => tour.status == 'PUBLISHED').length;
       return publishedToursCount >= 2;
     }
 

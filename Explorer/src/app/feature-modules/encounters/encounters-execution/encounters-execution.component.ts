@@ -7,7 +7,7 @@ import { Coordinate } from '../../tour-execution/model/coordinate';
 import { AddressTest } from '../../tour-authoring/model/address-test.model';
 import { EncounterExecutionService } from '../encounter-execution.service';
 import { EncounterService } from '../encounter.service';
-import { Encounter, EncounterStatistics, EncounterType } from '../model/encounters.model';
+import { Encounter, EncounterMessage, EncounterStatistics, EncounterType } from '../model/encounters.model';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { MapComponent } from 'src/app/shared/map/map.component';
 import { EncounterExecution, EncounterExecutionStatus } from '../model/encounter-execution.model';
@@ -51,8 +51,8 @@ export class EncountersExecutionComponent implements AfterViewInit, OnDestroy {
   }
 
   loadEncounters(): void {
-    this.encounterService.getActiveEncounters().subscribe((result: PagedResults<Encounter>) => {
-        this.encounters = result.results;
+    this.encounterService.getActiveEncounters().subscribe((result: EncounterMessage) => {
+        this.encounters = result.encounters;
         let popUps = this.encounters.reduce((map, encounter) => {
             map.set(encounter.id!, this.encounterDrawService.generateEncounterPopUp(encounter));
             return map;
